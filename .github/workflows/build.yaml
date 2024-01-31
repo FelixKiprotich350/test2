@@ -1,0 +1,38 @@
+name: macapp build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.17.1
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Set up Environment Variables
+      run: echo "GH_TOKEN=${{ secrets.GH_TOKEN }}" >> $GITHUB_ENV
+
+    - name: Build and Release
+      run: |
+        npx electron-builder --mac
+        git tag -a v1.0.0 -m "Release version 1.0.0"
+        git push --follow-tags
+
+    - name: Deploy to GitHub Releases
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/*
+      env:
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
