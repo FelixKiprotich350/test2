@@ -30,9 +30,24 @@ jobs:
         git tag -a v1.0.0 -m "Release version 1.0.0"
         git push --follow-tags
 
-    - name: Deploy to GitHub Releases
-      uses: softprops/action-gh-release@v1
-      with:
-        files: dist/*
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  release:
+    needs: build
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Create Git Tag
+        run: git tag -a v1.0.0 -m "Release version 1.0.0"
+
+      - name: Push Tag to GitHub
+        run: git push --follow-tags
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+          token: ${{ secrets.GH_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
