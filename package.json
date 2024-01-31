@@ -19,8 +19,7 @@
     "electron-builder": "^24.9.1"
   },
   "build": {
-    "appId": "com.example.myelectronapp",
-    "publish": "always",
+    "appId": "com.example.myelectronapp", 
     "productName": "My Electron App",
     "directories": {
       "output": "dist"
