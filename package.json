@@ -20,6 +20,7 @@
   },
   "build": {
     "appId": "com.example.myelectronapp",
+    "publish": "always",
     "productName": "My Electron App",
     "directories": {
       "output": "dist"
