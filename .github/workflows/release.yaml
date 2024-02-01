@@ -30,14 +30,15 @@ jobs:
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: "Release notes for ${{ github.ref }}"
           draft: false
           prerelease: false
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
 
       - name: Upload Release Asset
         id: upload-release-asset
