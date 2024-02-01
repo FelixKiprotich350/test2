@@ -24,27 +24,39 @@ jobs:
     - name: Set up Environment Variables
       run: echo "GH_TOKEN=${{ secrets.GH_TOKEN }}" >> $GITHUB_ENV
 
-    - name: Build and Release
+    - name: Configure Git
       run: |
-        npx electron-builder --linux 
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Configure Git
-        run: |
           git config --global user.email "fkiprotich845@gmail.com"
           git config --global user.name "Felix Kiprotich"
 
-      - name: Create Git Tag
-        run: git tag -a v1.0.0 -m "Release version 1.0.0"
+    - name: Create Git Tag
+      run: git tag -a v1.0.0 -m "Release version 1.0.0"
 
-      - name: Push Tag to GitHub
+    - name: Push Tag to GitHub
         run: git push --follow-tags
+
+    - name: Build Application
+      run: |
+        npx electron-builder --linux 
+        
+    - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: "Release notes for ${{ github.ref }}"
+          draft: false
+          prerelease: false
+
+    - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist/*
+          asset_name: My-Electron-App-${{ github.ref }}.zip
+          asset_content_type: application/zip
+
       
  
