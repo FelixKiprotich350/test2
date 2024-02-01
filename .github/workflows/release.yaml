@@ -39,7 +39,10 @@ jobs:
           draft: false
           prerelease: false
         
-
+      - name: Display Directory Contents
+        run: |
+          ls -R ./
+        working-directory: ${{ github.workspace }}
       - name: Upload Release Asset
         id: upload-release-asset
         uses: actions/upload-release-asset@v1
