@@ -33,16 +33,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          files: ./dist/*
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
           body: "Release notes for ${{ github.ref }}"
           draft: false
-          prerelease: false
-      
-      - name: Create Directory
-        run: |
-          mkdir -p dist
-        working-directory: ${{ github.workspace }}
+          prerelease: false 
 
       - name: Upload Release Asset
         id: upload-release-asset
