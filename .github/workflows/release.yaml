@@ -20,7 +20,7 @@ jobs:
 
       - name: Install Dependencies
         run: npm install
-        
+
       - name: Set up Environment Variables
         run: echo "GH_TOKEN=${{ secrets.GH_TOKEN }}" >> $GITHUB_ENV
 
@@ -36,6 +36,7 @@ jobs:
           body: "Release notes for ${{ github.ref }}"
           draft: false
           prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Release Asset
         id: upload-release-asset
